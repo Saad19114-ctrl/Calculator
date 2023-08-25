@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Simple Calculator</title>
+
+	<style>
+
+	body{
+		background-color: white;
+		background-position: center;
+
+		}
+	.main {
+		text-align: center;
+		margin-top: 300px;
+		margin-bottom: 300px;
+	}
+
+	.resultfield {
+		color: rgb(186, 146, 13);
+      width: 60%;
+	  height: 50%;
+      padding: 10px;
+      font-size: 34px;
+	  resize: none; /* Allow vertical resizing */
+	  overflow: hidden; /* Enable scrolling if content exceeds the height */
+	  border: 3px solid black;
+	  background:rgba(56,62,37,1);
+  		box-shadow:
+    		inset 1px 1px 6px 0px #050505,
+    		0px 0px 4px 2px #000,
+    		0px 0px 4px 2px #777;
+    }
+
+	.resultfield:hover {
+		background:rgba(56,62,37,1);
+  		box-shadow:
+    		inset 1px 1px 6px 0px #050505,
+    		0px 0px 4px 2px #000,
+    		0px 0px 4px 2px #777;
+	}
+	.math-fact {
+  font-size: 14px; /* Adjust the font size as needed */
+  margin-bottom: 10px; /* Add some spacing between facts */
+}
+	.buttons {
+      display: grid;
+	  margin-top: 2px;
+
+    }
+	.buttons button {
+      width: 5%;
+      height: 70px;
+      font-size: 25px;
+      margin: 0; /* Remove any margin */
+      border: none; /* Remove button border */
+    }
+    .buttons button:hover {
+      background-color: #3e3e70; /* Change background color on hover */
+      border: 2px solid black; /* Change cursor to pointer on hover */
+    }
+	.buttons button:active {
+      background-color: #191927; /* Change background color on hover */
+    }
+	.buttons button.equal-button{
+      	font-size: 34px!important;
+		background-color: rgb(89, 230, 108);
+		width: 145px;
+	}
+	.buttons button.equal-button:active{
+		background-color: black;
+	}
+	.randomLineButton {
+		background: transparent; 
+		color: #e8dede;
+		border: none;
+		font-size: 20px;
+		font-weight: bold;
+		text-decoration:underline;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+		font-family: Verdana, Geneva, Tahoma, sans-serif; 
+		margin-bottom: 20px; 
+		height: 50px; 
+		border-radius: 40%; /* Make the button circular */
+  		padding: 15px; /* Adjust padding to maintain circular shape */
+		width: 20%;
+	}
+	.randomLineButton:hover {
+		background-color: #0c0d0f;
+	}
+	.randomLineButton:active{
+		background-color: black;
+	}
+
+	.rate-button {
+		background-color: #f6f601;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		padding: 10px 20px;
+		cursor: pointer;
+}
+
+	.rating-popup {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+
+	.popup-content {
+		background-color: rgb(221, 59, 59);
+		width: 60%;
+		max-width: 400px;
+		margin: 15% auto;
+		padding: 20px;
+		text-align: center;
+		border-radius: 5px;
+		box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.close-button {
+		float: right;
+		font-size: 24px;
+		cursor: pointer;
+		color: white;
+	}
+
+	.rating-stars {
+		margin-top: 10px;
+	}
+
+	.star {
+		font-size: 24px;
+		cursor: pointer;
+		margin: 0 5px;
+		color: white;
+	}
+	.star.filled {
+		color: black; /* Change to black when filled */
+	}
+
+	.random-lines {
+		font-size: 20px;
+		color: black;
+		background-color: #6B5B95;
+		width: 90%;
+		margin-right:700px
+	}
+	</style>
+</head>
+<body>
+	<div class="main"> 
+	<div style="display: grid; margin-left: 350px;"> 
+		<button type="button" class="randomLineButton" id="randomLineButton" >A Math Fact</button>
+		<textarea class="resultfield" type="text" id="result"></textarea>
+	</div>
+	<div id="mathFacts"></div>
+
+	<div class="rating-popup" id="ratingPopup">
+		<div class="popup-content">
+		  <span class="close-button" id="closeButton">&times;</span>
+		  <h2 style="color:#d7fd00;" >Rate the Calculator</h2>
+		  <p style="color:white">Please rate the calculator:</p>
+		  <div class="rating-stars">
+			<span class="star" data-rating="1">&#9733;</span>
+			<span class="star" data-rating="2">&#9733;</span>
+			<span class="star" data-rating="3">&#9733;</span>
+			<span class="star" data-rating="4">&#9733;</span>
+			<span class="star" data-rating="5">&#9733;</span>
+		  </div>
+		  <p id="ratingMessage"></p>
+		</div>
+	  </div>
+	<div class="buttons">
+	<div class="frow"> 
+		<button type="button" style="background-color: #009B77">C</button>
+		<button type="button" id="rateButton" class="rateButton" style="color:white; font-weight: bold; background-color:#333333; font-size:12px">Rate the Calculator</button>
+		<button style="background-color:#FF6F61;">AC</button>
+		<button>/</button>
+	</div>
+	<div class="srow"> 
+		<button> 7</button>
+		<button> 8</button>
+		<button> 9</button>	
+		<button>*</button>
+	</div>
+	<div class="trow"> 
+		<button> 4</button>
+		<button> 5</button>
+		<button> 6</button>
+		<button>-</button>
+	</div>
+	<div class="forow"> 
+		<button> 1</button>
+		<button> 2</button>
+		<button> 3</button>
+		<button>+</button>
+	</div>
+
+	<div class="firow"> 
+		 
+	<button> 0</button>
+	<button>.</button>
+	<button class="equal-button">=</button></div>
+</div>
+
+</div>
+
+</body>
+
+<script> 
+
+window.onload = function () {
+  result.value = '';
+};
+
+let result = document.getElementById('result');
+let buttons = document.querySelectorAll('.buttons button');
+
+let currentExpression = '';
+
+// Add click event listeners to buttons
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const buttonText = button.innerText;
+    performCalculation(buttonText);
+  });
+});
+
+// Add keydown event listener to document
+document.addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent default behavior (form submission, etc.)
+    performCalculation('=');
+  }
+});
+
+function performCalculation(buttonText) {
+  if (buttonText === 'C') {
+    result.value = result.value.slice(0, -1); // Remove last character
+  } else if (buttonText === 'AC') {
+    result.value = '';
+    currentExpression = '';
+  } else if (buttonText === '=') {
+    try {
+      const sanitizedExpression = currentExpression
+        .replace(/[^-()\d/*+.]/g, '')  // Sanitize the expression
+        .replace(/-/g, ' - ')         // Add spaces around '-'
+        .replace(/\+\s+/g, '+')       // Remove spaces around '+'
+        .replace(/- \+ /g, '-')       // Remove '+' sign immediately after '-'
+        .replace(/\*\s+/g, '*')       // Remove spaces around '*'
+        .replace(/\/\s+/g, '/')
+        .replace(/\%\s+/g, '%');
+
+      if (/[-+/*]$/.test(sanitizedExpression)) {
+        sanitizedExpression = sanitizedExpression.slice(0, -1);
+      }
+      
+      result.value = eval(sanitizedExpression);
+      currentExpression = result.value.toString();
+    } catch (error) {
+      result.value = 'Error';
+      currentExpression = '';
+    }
+  } else {
+    result.value += buttonText;
+    currentExpression = result.value;
+  }
+}
+
+function getRandomLine() {
+	const randomLines = [
+  "Zero is the only number that cannot be represented by Roman numerals.",
+  "The number 9 is considered a magical number in mathematics. Multiplying any number by 9 and then adding the digits of the result will always lead to 9.",
+  "The number pi (π) is an irrational number, which means its decimal representation never repeats and never ends.",
+  "The Fibonacci sequence, where each number is the sum of the two preceding ones, appears in various unexpected places in nature, such as the arrangement of leaves on a stem.",
+  "A googol is a mathematical term for the number 1 followed by 100 zeros. It's larger than the number of atoms in the observable universe!",
+  "The concept of zero as a number was invented independently by ancient civilizations, including the Mayans, Indians, and Babylonians.",
+  "The Pythagorean theorem, which relates the sides of a right triangle, has over 400 different proofs.",
+  "There are more possible iterations of a game of chess than there are atoms in the known universe.",
+  "The shortest math paper ever published is just two sentences long. It proves the Collatz conjecture, a famous unsolved problem in number theory.",
+  "Mathematics is considered the universal language, as its principles are the same across cultures and languages."
+];
+
+
+  const randomIndex = Math.floor(Math.random() * randomLines.length);
+  randomLine = randomLines[randomIndex];
+  result.className = 'random-lines'
+  result.value = randomLine;
+
+}
+
+const randombutton = document.getElementById('randomLineButton');
+randombutton.addEventListener('click', getRandomLine);
+
+const rateButton = document.getElementById('rateButton');
+const ratingPopup = document.getElementById('ratingPopup');
+const closeButton = document.getElementById('closeButton');
+const ratingStars = document.querySelectorAll('.star');
+const ratingMessage = document.getElementById('ratingMessage');
+
+rateButton.addEventListener('click', () => {
+  ratingPopup.style.display = 'block';
+});
+
+closeButton.addEventListener('click', () => {
+  ratingPopup.style.display = 'none';
+});
+
+ratingStars.forEach(star => {
+  star.addEventListener('mouseenter', () => {
+    star.classList.add('filled'); // Add filled class on hover
+  });
+
+  star.addEventListener('mouseleave', () => {
+    star.classList.remove('filled'); // Remove filled class when not hovered
+  });
+});
+
+ratingStars.forEach(star => {
+  star.addEventListener('click', () => {
+    const rating = parseInt(star.getAttribute('data-rating'));
+    ratingMessage.textContent = `Rating has been successfully saved: ${rating}/5`;
+    setTimeout(() => {
+      ratingPopup.style.display = 'none';
+      ratingMessage.textContent = '';
+    }, 2000); // Hide popup after 2 seconds
+  });
+});
+
+
+
+</script>
+</html>
